@@ -41,6 +41,11 @@ def run(config):
             p
             | 'MatchFiles' >> beam.io.fileio.MatchFiles(src_path)
             | 'Read Matches' >> beam.io.fileio.ReadMatches()
+
+            # This glob expansion is not parallelizable. All the steps get fused into a single step by the Dataflow
+            # runner. For such a fused bundle to parallelize, the first step needs to be parallelizable. To make the
+            # pipeline parallelizable, we need to break fusion.This is done by adding a Reshuffle transform
+            # https://stackoverflow.com/questions/68821162/how-to-enable-parallel-reading-of-files-in-dataflow
             | 'Reshuffle' >> Reshuffle()
             | 'CopyToPostgres' >> beam.ParDo(CopyCsvToPostgres(config))
     )
