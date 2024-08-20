@@ -54,7 +54,11 @@ class GetConnection:
         self.logger.info("Creating SQLAlchemy Engine")
         self.engine = sqlalchemy.create_engine(
                 url=self._get_connection(),
-                echo=True
+                echo=True,
+                pool_size=100,  # Number of connections to maintain in the pool
+                max_overflow=5,  # Number of connections to create beyond pool_size
+                pool_timeout=30,  # Timeout for waiting to acquire a connection
+                pool_recycle=1800,  # Recycle connections after a certain number of seconds
             )
         return self.engine
 

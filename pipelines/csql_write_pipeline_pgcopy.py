@@ -1,5 +1,6 @@
 
 import apache_beam as beam
+from apache_beam import Reshuffle
 from apache_beam.options.pipeline_options import PipelineOptions
 from common.utils import parse_args
 from apache_beam.io.fileio import MatchFiles
@@ -40,6 +41,7 @@ def run(config):
             p
             | 'MatchFiles' >> beam.io.fileio.MatchFiles(src_path)
             | 'Read Matches' >> beam.io.fileio.ReadMatches()
+            | 'Reshuffle' >> Reshuffle()
             | 'CopyToPostgres' >> beam.ParDo(CopyCsvToPostgres(config))
     )
 
