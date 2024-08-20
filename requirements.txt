@@ -1,0 +1,12 @@
+google-cloud
+apache-beam[gcp]
+sqlalchemy
+google-cloud-secret-manager
+psycopg2-binary
+pandas
+google-auth
+pg8000
+setuptools
+google-cloud-storage
+duckdb
+cloud-sql-python-connector
